@@ -1,0 +1,63 @@
+
+<div class="heading">{{title}}</div>
+
+<mat-divider></mat-divider>
+<h3>input {{selectedOntology}}</h3>
+<!-- // Ontology -->
+<mat-form-field appearance="fill">
+  <mat-label>Select a ontology</mat-label>
+  <mat-select [(ngModel)]="selectedOntology" name="onto">
+    <mat-option *ngFor="let onto of ontology" [value]="onto.value">
+      {{onto.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<br>
+<!--  // select file-->
+<mat-form-field class="columns">
+    <mat-label *ngIf="selectedFiles; else newFile">{{selectedFiles.item(0).name}}</mat-label>
+    <ng-template #newFile>
+        <mat-label>Choose a file with axioms</mat-label>
+    </ng-template>
+    <input matInput disabled>
+    <button mat-icon-button matSuffix (click)="fileInput.click()">
+        <mat-icon aria-hidden="false">attach_file</mat-icon>
+    </button>
+    <input hidden (change)="selectFile($event)" #fileInput type="file" id="file">
+    <button mat-icon-button matSuffix (click)="clearSelectFile()">
+        <mat-icon aria-hidden="false">cancel</mat-icon>
+    </button>
+    <button mat-icon-button matSuffix (click)="feedbackFormSubmit()">
+        <mat-icon aria-hidden="false">send</mat-icon>
+    </button>
+</mat-form-field>
+
+<mat-divider></mat-divider>
+<h3>verbalization</h3>
+<!--  // verbalization -->
+<textarea [value]="feedbackFormResponse | json" class="form-control output" disabled="true" placeholder="Waiting...">
+</textarea>
+
+<mat-divider></mat-divider>
+<h3>feedback</h3>
+<!--  // feedbackForm -->
+
+<form [formGroup]="feedbackForm" class="form">
+<!--
+  <div class="form-group">
+    <input aria-multiline="true" class="form-control input" formControlName="input" name="path"
+           placeholder="Enter Input">
+    <br/>
+    <button mat-icon-button matSuffix (click)="feedbackFormSubmit()">
+        <mat-icon aria-hidden="false">send</mat-icon>
+    </button>
+  </div>
+ -->
+  <div class="form-group">
+    <textarea [value]="" class="form-control input" placeholder="Waiting...">
+    </textarea>
+  </div>
+  <button mat-icon-button matSuffix (click)="feedbackFormSubmit()">
+      <mat-icon aria-hidden="false">send</mat-icon>
+  </button>
+</form>
