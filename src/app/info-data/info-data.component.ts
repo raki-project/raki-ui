@@ -2,9 +2,10 @@ import {Injectable, Component, Input} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
-
+//
+import {InfoData} from './interface/info';
+//
 @Injectable({providedIn: 'root'})
-
 
 @Component({
   selector: 'info-data',
@@ -12,31 +13,25 @@ import {catchError, map, tap} from 'rxjs/operators';
   styleUrls: ['info-data.component.css']
 })
 
-
+//
 export class InfoDataComponent {
   infoURL: string = 'http://localhost:9081/info';
-  infoData :{};
+//  infoData :{};
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     responseType: 'json' as const
   };
-
+//
   constructor(
     private http: HttpClient
   ) {}
-
-  getData() {
-    this.http.get(this.infoURL, this.httpOptions)
-    .subscribe(
-      (response) => {
-        console.log(response);
-        this.infoData = response;
-      },
-      (error) => {
-        console.error(error);
-      },
-      () => {
-        console.log('Request completed');
-      })
+//
+  /** GET data from the server */
+  getData(): Observable<InfoData> {
+    return this.http.get<InfoData>(this.infoURL, this.httpOptions)
+      .pipe(
+        tap(_ => console.log('fetched data'))//,
+        ///catchError(this.handleError<InfoData>('InfoData', []))
+      );
   }
 }

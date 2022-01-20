@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Logger} from './logger.service';
 import {FeedbackComponent} from './feedback.component';
 import {InfoDataComponent} from './info-data/info-data.component';
-
+import {InfoData} from './info-data/interface/info';
 
 // Ontology
 interface Ontology {
@@ -28,10 +28,15 @@ export class AppComponent {
     private feedbackComponent: FeedbackComponent
   ) { }
 
+  infodata:   InfoData;
+
   ngOnInit() {
-    this.infoDataComponent.getData();
+    this.intiInfodata();
+  }
 
-
+  intiInfodata(): void {
+    this.infoDataComponent.getData()
+      .subscribe(infodata => this.infodata = infodata);
   }
 
   title = 'RAKI GUI';
@@ -53,8 +58,6 @@ export class AppComponent {
   }
   clearSelectFile(){
     this.selectedFiles = '';
-    //this.ontology = this.infoDataComponent.infoData['ontology']);
-    //console.log(this.ontology);
   }
 
   // feedbackForm
