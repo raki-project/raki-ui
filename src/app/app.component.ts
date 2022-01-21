@@ -7,12 +7,6 @@ import {FeedbackComponent} from './feedback.component';
 import {InfoDataComponent} from './info-data/info-data.component';
 import {InfoData} from './info-data/interface/info';
 
-// Ontology
-interface Ontology {
-  value: string;
-  viewValue: string;
-}
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -21,6 +15,9 @@ interface Ontology {
 
 export class AppComponent {
 
+  title: string = 'RAKI GUI';
+  infoURL: string = 'http://localhost:9081/info/';
+
   constructor(
     private log: Logger,
     private http: HttpClient,
@@ -28,7 +25,9 @@ export class AppComponent {
     private feedbackComponent: FeedbackComponent
   ) { }
 
-  infodata:   InfoData;
+  infodata: InfoData;
+  selectedOntology: string;
+  ontology: any=[];
 
   ngOnInit() {
     this.intiInfodata();
@@ -36,20 +35,11 @@ export class AppComponent {
 
   intiInfodata(): void {
     this.infoDataComponent.getData()
-      .subscribe(infodata => this.infodata = infodata);
+      .subscribe(infodata => {
+        this.infodata = infodata;
+        this.ontology = infodata.ontology;
+      });
   }
-
-  title = 'RAKI GUI';
-
-  // Ontology
-  infoURL: string = 'http://localhost:9081/info/';
-
-  selectedOntology: string;
-  ontology: Ontology[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
-  ];
 
   // select file
   selectedFiles = '';
