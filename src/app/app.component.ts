@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 //
-import {Logger} from './logger.service';
-import {FeedbackComponent} from './feedback.component';
+import {Logger} from './logger/logger.service';
+import {FeedbackComponent} from './feedback/feedback.component';
 import {InfoDataComponent} from './info-data/info-data.component';
 import {InfoData} from './info-data/interface/info';
 
