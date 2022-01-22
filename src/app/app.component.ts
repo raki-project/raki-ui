@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 //
 import {Logger} from './logger/logger.service';
-import {FeedbackComponent} from './feedback/feedback.component';
+import {InputComponent} from './input/input.component';
 import {InfoDataComponent} from './info-data/info-data.component';
 import {InfoData} from './info-data/interface/info';
 
@@ -22,12 +22,11 @@ export class AppComponent {
     private log: Logger,
     private http: HttpClient,
     private infoDataComponent: InfoDataComponent,
-    private feedbackComponent: FeedbackComponent
+    public inputComponent: InputComponent
   ) { }
 
-  infodata: InfoData;
-  selectedOntology: string;
   ontology: any=[];
+  // version: any=[];
 
   ngOnInit() {
     this.intiInfodata();
@@ -36,18 +35,9 @@ export class AppComponent {
   intiInfodata(): void {
     this.infoDataComponent.getData()
       .subscribe(infodata => {
-        this.infodata = infodata;
         this.ontology = infodata.ontology;
+        // this.version = infodata.version;
       });
-  }
-
-  // select file
-  selectedFiles = '';
-  selectFile(event) {
-      this.selectedFiles = event.target.files;
-  }
-  clearSelectFile(){
-    this.selectedFiles = '';
   }
 
   // feedbackForm
@@ -58,8 +48,6 @@ export class AppComponent {
 
   feedbackFormSubmit() {
     this.log.info(this.feedbackForm.controls.input.value);
-    this.log.info(this.selectedFiles);
-    this.log.info(this.selectedOntology);
     this.feedbackFormResponse = 'Loading...';
 
     setTimeout(() => {

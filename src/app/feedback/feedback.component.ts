@@ -5,8 +5,6 @@ import {HttpClient, HttpEventType} from '@angular/common/http';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatIconModule} from '@angular/material/icon';
-//import {MatIconModule} from '@angular/material/icon';
-//import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @Injectable({providedIn: 'root'})
 
@@ -17,6 +15,7 @@ import {MatIconModule} from '@angular/material/icon';
 })
 
 export class FeedbackComponent {
+
   @Input()
   requiredFileType:string;
 
