@@ -6,6 +6,7 @@ import {Logger} from './logger/logger.service';
 import {InputComponent} from './input/input.component';
 import {InfoDataComponent} from './info-data/info-data.component';
 import {InfoData} from './info-data/interface/info';
+import {FeedbackComponent} from './feedback/feedback.component';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,8 @@ export class AppComponent {
     private log: Logger,
     private http: HttpClient,
     private infoDataComponent: InfoDataComponent,
-    public inputComponent: InputComponent
+    public inputComponent: InputComponent,
+    public feedbackComponent: FeedbackComponent
   ) { }
 
   ontology: any=[];

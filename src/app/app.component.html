@@ -58,11 +58,10 @@
 <h3>feedback</h3>
 <form [formGroup]="feedbackForm" class="form">
   <div class="form-group">
-    <textarea [value]="feedbackFormResponse" class="form-control input" placeholder="Waiting...">
+    <textarea matInput [(ngModel)]="feedbackComponent.responseData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
     </textarea>
   </div>
-  <button mat-icon-button matSuffix (click)="feedbackFormSubmit()">
+  <button mat-icon-button matSuffix (click)="feedbackComponent.submit()">
       <mat-icon aria-hidden="false">send</mat-icon>
   </button>
 </form>
-<!-- -->
