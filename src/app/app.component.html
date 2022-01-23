@@ -40,6 +40,7 @@
   <mat-progress-bar class="progress-bar" mode="determinate"
                     [value]="inputComponent.uploadProgress" *ngIf="inputComponent.uploadProgress">
   </mat-progress-bar>
+
   <mat-icon class="cancel-upload" (click)="inputComponent.cancelUpload()"
             *ngIf="inputComponent.uploadProgress">delete_forever</mat-icon>
 </div>
@@ -50,8 +51,12 @@
 <mat-divider></mat-divider>
 <h3>verbalization</h3>
 
-<textarea [value]="inputComponent.responseData | json" class="form-control output" disabled="true" placeholder="Waiting...">
+<!--
+<textarea [value]="inputComponent.responseData | prettyjson" class="form-control output" disabled="true" placeholder="Waiting...">
 </textarea>
+-->
+
+<pre [innerHTML]="inputComponent.responseData | prettyjson"></pre>
 <!-- -->
 <!--  // feedbackForm -->
 <mat-divider></mat-divider>
