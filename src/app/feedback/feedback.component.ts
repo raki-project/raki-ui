@@ -16,20 +16,28 @@ import {MatIconModule} from '@angular/material/icon';
 
 export class FeedbackComponent {
 
-  @Input()
-  requiredFileType:string;
+//  @Input()
+//  requiredFileType:string;
 
-  fileName = '';
-  uploadProgress:number;
+//  fileName = '';
+//  uploadProgress:number;
   uploadSub: Subscription;
 
   constructor(private http: HttpClient) {}
 
   apiURL: string = 'http://localhost:9081/feedback';
-  responseData : any;
+  inputData : any;
 
   submit():void{
-    console.log("submit feedback");
-    console.log(this.responseData);
+    if(this.inputData){
+      const file : File = new File([this.inputData], 'inputData.txt', {
+        type: 'application/json',
+      });
+      console.log('submit feedback');
+      console.log(this.inputData);
+      console.log(file);
+    }else{
+      console.warn('No data given!');
+    }
   }
 }
