@@ -11,7 +11,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatSelectModule} from '@angular/material/select';
-import {MatProgressBarModules} from '@angular/material/progress-bar';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 // app
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
