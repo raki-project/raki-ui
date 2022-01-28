@@ -33,6 +33,7 @@ export class InputComponent {
     constructor(private http: HttpClient) {}
 
     selectedOntology: string;
+    @Input()
     responseData : any;
 
     onFileSelected(event) {

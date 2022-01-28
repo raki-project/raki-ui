@@ -28,7 +28,7 @@ export class AppComponent {
   ) { }
 
   ontology: any=[];
-  // version: any=[];
+  version: any=[];
 
   ngOnInit() {
     this.intiInfodata();
@@ -38,36 +38,7 @@ export class AppComponent {
     this.infoDataComponent.getData()
       .subscribe(infodata => {
         this.ontology = infodata.ontology;
-        // this.version = infodata.version;
+        this.version = infodata.version;
       });
   }
-
-  // feedbackForm
-  feedbackFormResponse = '';
-  feedbackForm = new FormGroup({
-    input: new FormControl(),
-  });
-
-  feedbackFormSubmit() {
-    this.log.info(this.feedbackForm.controls.input.value);
-    this.feedbackFormResponse = 'Loading...';
-
-    setTimeout(() => {
-        (async () => {
-          let baseUrl = 'http://localhost:9081/info';
-          const value = this.feedbackForm.controls.input.value;
-          if (value != null) {
-            baseUrl = baseUrl + '?path=' + value;
-          }
-          const response = await fetch(baseUrl.toString());
-          // tslint:disable-next-line:triple-equals
-          if (response.status != 200) {
-            this.feedbackFormResponse = 'Bad Request Error. \n' + response.body;
-          } else {
-            this.feedbackFormResponse = await response.json();
-          }
-        })();
-      },
-      2000);
-  };
 }

@@ -16,15 +16,11 @@ import {MatIconModule} from '@angular/material/icon';
 
 export class FeedbackComponent {
 
-//  @Input()
-//  requiredFileType:string;
-
-//  fileName = '';
   uploadProgress:number;
   uploadSub: Subscription;
   httpOptions = {
     //headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    //responseType: 'json' as const,
+    responseType: 'text' as const,
     reportProgress: true,
     observe: 'events' as const
   };
@@ -36,7 +32,7 @@ export class FeedbackComponent {
 
   submit():void{
     if(this.inputData){
-      const file : File = new File([this.inputData], 'inputData.txt', {
+      const file : File = new File([this.inputData], 'feedback.json', {
         type: 'application/json',
       });
 

@@ -44,29 +44,29 @@
   <mat-icon class="cancel-upload" (click)="inputComponent.cancelUpload()"
             *ngIf="inputComponent.uploadProgress">delete_forever</mat-icon>
 </div>
-<!-- -->
 
-<!-- -->
 <!--  // verbalization -->
 <mat-divider></mat-divider>
 <h3>verbalization</h3>
+<pre [innerHTML]="inputComponent.responseData | prettyjson" *ngIf="inputComponent.responseData"></pre>
 
-<!--
-<textarea [value]="inputComponent.responseData | prettyjson" class="form-control output" disabled="true" placeholder="Waiting...">
-</textarea>
--->
-
-<pre [innerHTML]="inputComponent.responseData | prettyjson"></pre>
-<!-- -->
 <!--  // feedbackForm -->
 <mat-divider></mat-divider>
 <h3>feedback</h3>
-<form [formGroup]="feedbackForm" class="form">
-  <div class="form-group">
-    <textarea matInput [(ngModel)]="feedbackComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
-    </textarea>
-  </div>
-  <button mat-icon-button matSuffix (click)="feedbackComponent.submit()">
-      <mat-icon aria-hidden="false">send</mat-icon>
-  </button>
-</form>
+<div class="form-group">
+  <textarea matInput [(ngModel)]="feedbackComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
+  </textarea>
+</div>
+<button mat-icon-button matSuffix (click)="feedbackComponent.submit()">
+    <mat-icon aria-hidden="false">send</mat-icon>
+</button>
+<!--
+<div class="progress">
+  <mat-progress-bar class="progress-bar" mode="determinate"
+                    [value]="feedbackComponent.uploadProgress" *ngIf="feedbackComponent.uploadProgress">
+  </mat-progress-bar>
+
+  <mat-icon class="cancel-upload" (click)="feedbackComponent.cancelUpload()"
+            *ngIf="feedbackComponent.uploadProgress">delete_forever</mat-icon>
+</div>
+-->
