@@ -5,6 +5,7 @@ import {HttpClient, HttpEventType} from '@angular/common/http';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatIconModule} from '@angular/material/icon';
+import {AppConfigService} from '../app/AppConfigService';
 
 @Injectable({providedIn: 'root'})
 
@@ -16,6 +17,8 @@ import {MatIconModule} from '@angular/material/icon';
 
 export class FeedbackComponent {
 
+  constructor(private http: HttpClient,private cfg: AppConfigService) {}
+
   uploadProgress:number;
   uploadSub: Subscription;
   httpOptions = {
@@ -24,9 +27,9 @@ export class FeedbackComponent {
     reportProgress: true,
     observe: 'events' as const
   };
-  constructor(private http: HttpClient) {}
 
-  apiURL: string = 'http://localhost:9081/feedback';
+
+  feedbackAPI: string = this.cfg.api + 'feedback';
   inputData : any;
   responseData : any;
 
@@ -39,7 +42,7 @@ export class FeedbackComponent {
       const formData = new FormData();
       formData.append('feedback', file);
 
-      const upload$ = this.http.post(this.apiURL, formData, this.httpOptions).pipe(
+      const upload$ = this.http.post(this.feedbackAPI, formData, this.httpOptions).pipe(
           finalize(() => this.reset())
       )
 

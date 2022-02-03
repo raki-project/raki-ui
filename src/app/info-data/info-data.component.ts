@@ -2,8 +2,8 @@ import {Injectable, Component, Input} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
-
 import {InfoData} from './interface/info';
+import {AppConfigService} from '../app/AppConfigService';
 
 @Injectable({providedIn: 'root'})
 
@@ -16,20 +16,20 @@ import {InfoData} from './interface/info';
 /** InfoDataComponent */
 export class InfoDataComponent {
 
-  infoURL: string = 'http://localhost:9081/info';
+  constructor(private http: HttpClient,private cfg: AppConfigService) {}
+
+  infoAPI: string = this.cfg.api + 'info';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     responseType: 'json' as const
   };
 
-  constructor(
-    private http: HttpClient
-  ) {}
+
 
   /** GET data from the server */
   getData(): Observable<InfoData> {
-    return this.http.get<InfoData>(this.infoURL, this.httpOptions)
+    return this.http.get<InfoData>(this.infoAPI, this.httpOptions)
       .pipe(
         tap(_ => console.log('fetched data'))
       );

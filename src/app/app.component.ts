@@ -17,7 +17,6 @@ import {FeedbackComponent} from './feedback/feedback.component';
 export class AppComponent {
 
   title: string = 'RAKI GUI';
-  infoURL: string = 'http://localhost:9081/info/';
 
   constructor(
     private log: Logger,

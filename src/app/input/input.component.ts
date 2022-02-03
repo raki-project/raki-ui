@@ -5,6 +5,7 @@ import {HttpClient, HttpEventType} from '@angular/common/http';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatIconModule} from '@angular/material/icon';
+import {AppConfigService} from '../app/AppConfigService';
 
 @Injectable({providedIn: 'root'})
 
@@ -16,6 +17,8 @@ import {MatIconModule} from '@angular/material/icon';
 
 export class InputComponent {
 
+    constructor(private http: HttpClient,private cfg: AppConfigService) {}
+
     @Input()
     requiredFileType:string;
     file : File;
@@ -23,14 +26,14 @@ export class InputComponent {
     uploadProgress:number;
     uploadSub: Subscription;
 
-    apiURL: string = 'http://localhost:9081/rules';
+    rulesAPI: string = this.cfg.api + 'rules';
+
     httpOptions = {
       //headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       responseType: 'json' as const,
       reportProgress: true,
       observe: 'events' as const
     };
-    constructor(private http: HttpClient) {}
 
     selectedOntology: string;
     @Input()
@@ -47,7 +50,7 @@ export class InputComponent {
           formData.append('axioms', this.file);
           formData.append('ontology', this.file);//TODO
 
-          const upload$ = this.http.post(this.apiURL, formData, this.httpOptions).pipe(
+          const upload$ = this.http.post(this.rulesAPI, formData, this.httpOptions).pipe(
               finalize(() => this.reset())
           )
 
