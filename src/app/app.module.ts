@@ -19,6 +19,10 @@ import {AppComponent} from './app.component';
 import {InfoDataComponent} from './info-data/info-data.component';
 import {PrettyJsonPipe} from './prettyjson/prettyjson.pipe';
 
+import {APP_INITIALIZER} from '@angular/core';
+import {AppConfigService} from './app/AppConfigService';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +39,16 @@ import {PrettyJsonPipe} from './prettyjson/prettyjson.pipe';
     //
     NgbModule
   ],
-  providers: [],
+  providers: [ {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [AppConfigService],
+      useFactory: (appConfigService: AppConfigService) => {
+        return () => {
+          return appConfigService.loadAppConfig();
+        };
+      }
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule {
