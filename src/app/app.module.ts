@@ -1,5 +1,5 @@
 // angular
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
@@ -19,8 +19,7 @@ import {AppComponent} from './app.component';
 import {InfoDataComponent} from './info-data/info-data.component';
 import {PrettyJsonPipe} from './prettyjson/prettyjson.pipe';
 
-import {APP_INITIALIZER} from '@angular/core';
-import {AppConfigService} from './app/AppConfigService';
+import {ConfigService} from './app/config.service';
 
 
 @NgModule({
@@ -42,10 +41,10 @@ import {AppConfigService} from './app/AppConfigService';
   providers: [ {
       provide: APP_INITIALIZER,
       multi: true,
-      deps: [AppConfigService],
-      useFactory: (appConfigService: AppConfigService) => {
+      deps: [ConfigService],
+      useFactory: (cfg: ConfigService) => {
         return () => {
-          return appConfigService.loadAppConfig();
+          return cfg.loadConfig();
         };
       }
     }],

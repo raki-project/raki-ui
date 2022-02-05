@@ -5,7 +5,7 @@ import {HttpClient, HttpEventType} from '@angular/common/http';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatIconModule} from '@angular/material/icon';
-import {AppConfigService} from '../app/AppConfigService';
+import {ConfigService} from '../app/config.service';
 
 @Injectable({providedIn: 'root'})
 
@@ -17,7 +17,7 @@ import {AppConfigService} from '../app/AppConfigService';
 
 export class FeedbackComponent {
 
-  constructor(private http: HttpClient,private cfg: AppConfigService) {}
+  constructor(private http: HttpClient,private cfg: ConfigService) {}
 
   uploadProgress:number;
   uploadSub: Subscription;
@@ -30,12 +30,12 @@ export class FeedbackComponent {
 
 
   feedbackAPI: string = this.cfg.api + 'feedback';
-  inputData : any;
-  responseData : any;
+  inputData: any;
+  responseData: any;
 
   submit():void{
     if(this.inputData){
-      const file : File = new File([this.inputData], 'feedback.json', {
+      const file: File = new File([this.inputData], 'feedback.json', {
         type: 'application/json',
       });
 

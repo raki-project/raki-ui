@@ -1,4 +1,4 @@
-export interface InfoData {
+export interface InfoDataInterface {
   version: {
     name: string;
     version: string;

@@ -3,6 +3,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 @Pipe({
   name: 'prettyjson'
 })
+
 export class PrettyJsonPipe implements PipeTransform {
 
   transform(json: any, ...args: any[]): any {

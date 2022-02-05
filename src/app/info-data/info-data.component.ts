@@ -2,8 +2,8 @@ import {Injectable, Component, Input} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
-import {InfoData} from './interface/info';
-import {AppConfigService} from '../app/AppConfigService';
+import {InfoDataInterface} from './interface/info';
+import {ConfigService} from '../app/config.service';
 
 @Injectable({providedIn: 'root'})
 
@@ -16,7 +16,7 @@ import {AppConfigService} from '../app/AppConfigService';
 /** InfoDataComponent */
 export class InfoDataComponent {
 
-  constructor(private http: HttpClient,private cfg: AppConfigService) {}
+  constructor(private http: HttpClient,private cfg: ConfigService) {}
 
   infoAPI: string = this.cfg.api + 'info';
 
@@ -28,8 +28,8 @@ export class InfoDataComponent {
 
 
   /** GET data from the server */
-  getData(): Observable<InfoData> {
-    return this.http.get<InfoData>(this.infoAPI, this.httpOptions)
+  getData(): Observable<InfoDataInterface> {
+    return this.http.get<InfoDataInterface>(this.infoAPI, this.httpOptions)
       .pipe(
         tap(_ => console.log('fetched data'))
       );

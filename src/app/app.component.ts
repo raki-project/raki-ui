@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 //
-import {Logger} from './logger/logger.service';
+import {LoggerService} from './logger/logger.service';
 import {InputComponent} from './input/input.component';
 import {InfoDataComponent} from './info-data/info-data.component';
-import {InfoData} from './info-data/interface/info';
+import {InfoDataInterface} from './info-data/interface/info';
 import {FeedbackComponent} from './feedback/feedback.component';
 
 @Component({
@@ -19,7 +19,7 @@ export class AppComponent {
   title: string = 'RAKI GUI';
 
   constructor(
-    private log: Logger,
+    private log: LoggerService,
     private http: HttpClient,
     private infoDataComponent: InfoDataComponent,
     public inputComponent: InputComponent,

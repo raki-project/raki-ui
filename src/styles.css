@@ -6,9 +6,15 @@ body {
   background-color: #165b12;
   color:#fff;
 }
-pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+pre {
+  outline: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px;
+  background-color: #fff;
+}
+
 .string { color: green; }
 .number { color: darkorange; }
 .boolean { color: blue; }
 .null { color: magenta; }
-.key { color: red; }
+.key { color: black; }
