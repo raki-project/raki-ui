@@ -9,7 +9,7 @@
 <mat-form-field appearance="fill">
   <mat-label>Select a ontology</mat-label>
   <mat-select [(ngModel)]="inputComponent.selectedOntology" name="onto">
-    <mat-option *ngFor="let onto of ontology" [value]="onto.path">
+    <mat-option *ngFor="let onto of ontology" [value]="onto.name">
       {{onto.name}}
     </mat-option>
   </mat-select>
@@ -17,9 +17,9 @@
 <br>
 <!--  // select input file-->
 <mat-form-field class="columns">
-    <mat-label *ngIf="inputComponent.file; else newFile">{{inputComponent.fileName}}</mat-label>
+    <mat-label *ngIf="inputComponent.examplesFile; else newFile">{{inputComponent.examplesFileName}}</mat-label>
     <ng-template #newFile>
-        <mat-label>Choose a file with axioms</mat-label>
+        <mat-label>Choose a file with examples</mat-label>
     </ng-template>
     <input matInput disabled>
     <button mat-icon-button matSuffix (click)="fileInput.click()">
@@ -34,6 +34,11 @@
     <button mat-icon-button matSuffix (click)="inputComponent.fileUpload()">
         <mat-icon aria-hidden="false">send</mat-icon>
     </button>
+<!-- -->
+<textarea matInput [(ngModel)]="inputComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
+</textarea>
+<!-- -->
+
 </mat-form-field>
 
 <div class="progress">

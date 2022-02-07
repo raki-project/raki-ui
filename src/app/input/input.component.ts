@@ -5,7 +5,7 @@ import {HttpClient, HttpEventType} from '@angular/common/http';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatIconModule} from '@angular/material/icon';
-import {AppConfigService} from '../app/AppConfigService';
+import {ConfigService} from '../app/config.service';
 
 @Injectable({providedIn: 'root'})
 
@@ -17,13 +17,21 @@ import {AppConfigService} from '../app/AppConfigService';
 
 export class InputComponent {
 
-    constructor(private http: HttpClient,private cfg: AppConfigService) {}
+    constructor(private http: HttpClient, private cfg: ConfigService) {}
 
-    @Input()
-    requiredFileType:string;
-    file : File;
-    fileName : string = '';
-    uploadProgress:number;
+    @Input() requiredFileType: string;
+    @Input() responseData: any;
+
+    // input via promt instead of a file
+    //@Input()
+    inputData: string;
+
+    examplesFile: File;
+    examplesFileName: string = '';
+
+    selectedOntology: string;
+
+    uploadProgress: number;
     uploadSub: Subscription;
 
     rulesAPI: string = this.cfg.api + 'rules';
@@ -35,34 +43,49 @@ export class InputComponent {
       observe: 'events' as const
     };
 
-    selectedOntology: string;
-    @Input()
-    responseData : any;
-
     onFileSelected(event) {
-        this.file = event.target.files[0];
-        this.fileName = this.file.name;
+        this.examplesFile = event.target.files[0];
+        this.examplesFileName = this.examplesFile.name;
+    }
+
+    sendData(formData: FormData){
+      const upload$ = this.http.post(this.rulesAPI, formData, this.httpOptions).pipe(
+          finalize(() => this.reset())
+      )
+
+      this.uploadSub = upload$.subscribe(event => {
+        if (event.type == HttpEventType.UploadProgress) {
+          this.uploadProgress = Math.round(100 * (event.loaded / event.total));
+        }
+        if (event.type === HttpEventType.Response) {
+            this.responseData = event.body;
+        }
+      })
     }
 
     fileUpload(){
-      if (this.file) {
-          const formData = new FormData();
-          formData.append('axioms', this.file);
-          formData.append('ontology', this.file);//TODO
+      const formData = new FormData();
 
-          const upload$ = this.http.post(this.rulesAPI, formData, this.httpOptions).pipe(
-              finalize(() => this.reset())
-          )
+      if (this.examplesFile) {
+        console.log('input examples via file');
 
-          this.uploadSub = upload$.subscribe(event => {
-            if (event.type == HttpEventType.UploadProgress) {
-              this.uploadProgress = Math.round(100 * (event.loaded / event.total));
-            }
-            if (event.type === HttpEventType.Response) {
-                this.responseData = event.body;
-            }
-          })
+        formData.append('axioms', this.examplesFile);
+
+      }else if(this.inputData){
+        console.log('input via prompt');
+
+        const file: File = new File([this.inputData], 'axioms.owl', {
+          type: 'application/rdf+xml',
+        });
+
+        formData.append('axioms', file);
+
+      }else{
+        console.error('no input given');
       }
+
+      formData.append('ontologyName', this.selectedOntology);
+      this.sendData(formData);
     }
   cancelUpload() {
     this.uploadSub.unsubscribe();
@@ -72,7 +95,7 @@ export class InputComponent {
   reset() {
     this.uploadProgress = null;
     this.uploadSub = null;
-    this.file = null;
-    this.fileName=null;
+    this.examplesFile = null;
+    this.examplesFileName=null;
   }
 }
