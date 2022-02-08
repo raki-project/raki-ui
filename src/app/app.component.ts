@@ -16,7 +16,8 @@ import {FeedbackComponent} from './feedback/feedback.component';
 
 export class AppComponent {
 
-  title: string = 'RAKI GUI';
+  title: string = 'RAKI';
+  subtitle: string = 'graphical user interface';
 
   constructor(
     private log: LoggerService,

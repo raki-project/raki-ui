@@ -1,77 +1,95 @@
 
-<div class="heading">{{title}}</div>
-
+<h1 class="display-1 text-center">
+  {{title}}
+  <small class="text-muted">{{subtitle}}</small>
+</h1>
 <mat-divider></mat-divider>
-<!--  -->
-<!--  -->
-<h3>input {{inputComponent.selectedOntology}}</h3>
-<!-- // select ontology -->
-<mat-form-field appearance="fill">
-  <mat-label>Select a ontology</mat-label>
-  <mat-select [(ngModel)]="inputComponent.selectedOntology" name="onto">
-    <mat-option *ngFor="let onto of ontology" [value]="onto.name">
-      {{onto.name}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<br>
-<!--  // select input file-->
-<mat-form-field class="columns">
-    <mat-label *ngIf="inputComponent.examplesFile; else newFile">{{inputComponent.examplesFileName}}</mat-label>
-    <ng-template #newFile>
-        <mat-label>Choose a file with examples</mat-label>
-    </ng-template>
-    <input matInput disabled>
-    <button mat-icon-button matSuffix (click)="fileInput.click()">
-        <mat-icon aria-hidden="false">attach_file</mat-icon>
-    </button>
-    <input hidden #fileInput type="file" id="file"
-      (change)="inputComponent.onFileSelected($event)"
-      [accept]="inputComponent.requiredFileType">
-    <button mat-icon-button matSuffix (click)="inputComponent.reset()">
-        <mat-icon aria-hidden="false">cancel</mat-icon>
-    </button>
-    <button mat-icon-button matSuffix (click)="inputComponent.fileUpload()">
-        <mat-icon aria-hidden="false">send</mat-icon>
-    </button>
-<!-- -->
-<textarea matInput [(ngModel)]="inputComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
-</textarea>
-<!-- -->
 
-</mat-form-field>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <!-- left empty col -->
+    </div>
+    <div class="col-10">
+      <!--  -->
+      <!--  -->
+      <h3>Input
+        <small class="text-muted">{{inputComponent.selectedOntology}}</small>
+      </h3>
+      <!-- // select ontology -->
+      <mat-form-field appearance="fill">
+        <mat-label>Select a ontology</mat-label>
+        <mat-select [(ngModel)]="inputComponent.selectedOntology" name="onto">
+          <mat-option *ngFor="let onto of ontology" [value]="onto.name">
+            {{onto.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <!--  // select input file-->
+      <mat-form-field class="columns">
+          <mat-label *ngIf="inputComponent.examplesFile; else newFile">{{inputComponent.examplesFileName}}</mat-label>
+          <ng-template #newFile>
+              <mat-label>Choose a file with examples</mat-label>
+          </ng-template>
+          <input matInput disabled>
+          <button mat-icon-button matSuffix (click)="fileInput.click()">
+              <mat-icon aria-hidden="false">attach_file</mat-icon>
+          </button>
+          <input hidden #fileInput type="file" id="file"
+            (change)="inputComponent.onFileSelected($event)"
+            [accept]="inputComponent.requiredFileType">
+          <button mat-icon-button matSuffix (click)="inputComponent.reset()">
+              <mat-icon aria-hidden="false">cancel</mat-icon>
+          </button>
+          <button mat-icon-button matSuffix (click)="inputComponent.fileUpload()">
+              <mat-icon aria-hidden="false">send</mat-icon>
+          </button>
+      <!-- -->
+      <textarea matInput [(ngModel)]="inputComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
+      </textarea>
+      <!-- -->
 
-<div class="progress">
-  <mat-progress-bar class="progress-bar" mode="determinate"
-                    [value]="inputComponent.uploadProgress" *ngIf="inputComponent.uploadProgress">
-  </mat-progress-bar>
+      </mat-form-field>
 
-  <mat-icon class="cancel-upload" (click)="inputComponent.cancelUpload()"
-            *ngIf="inputComponent.uploadProgress">delete_forever</mat-icon>
+      <div class="progress">
+        <mat-progress-bar class="progress-bar" mode="determinate"
+                          [value]="inputComponent.uploadProgress" *ngIf="inputComponent.uploadProgress">
+        </mat-progress-bar>
+
+        <mat-icon class="cancel-upload" (click)="inputComponent.cancelUpload()"
+                  *ngIf="inputComponent.uploadProgress">delete_forever</mat-icon>
+      </div>
+
+      <!--  // verbalization -->
+      <mat-divider></mat-divider>
+      <h3>Verbalization</h3>
+      <pre [innerHTML]="inputComponent.responseData | prettyjson" *ngIf="inputComponent.responseData"></pre>
+
+      <!--  // feedbackForm -->
+      <mat-divider></mat-divider>
+      <h3>Feedback</h3>
+      <div class="form-group">
+        <textarea matInput [(ngModel)]="feedbackComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
+        </textarea>
+      </div>
+      <button mat-icon-button matSuffix (click)="feedbackComponent.submit()">
+          <mat-icon aria-hidden="false">send</mat-icon>
+      </button>
+      <!--
+      <div class="progress">
+        <mat-progress-bar class="progress-bar" mode="determinate"
+                          [value]="feedbackComponent.uploadProgress" *ngIf="feedbackComponent.uploadProgress">
+        </mat-progress-bar>
+
+        <mat-icon class="cancel-upload" (click)="feedbackComponent.cancelUpload()"
+                  *ngIf="feedbackComponent.uploadProgress">delete_forever</mat-icon>
+      </div>
+      -->
+
+    </div>
+    <div class="col">
+      <!-- right empty col -->
+    </div>
+  </div>
 </div>
-
-<!--  // verbalization -->
-<mat-divider></mat-divider>
-<h3>verbalization</h3>
-<pre [innerHTML]="inputComponent.responseData | prettyjson" *ngIf="inputComponent.responseData"></pre>
-
-<!--  // feedbackForm -->
-<mat-divider></mat-divider>
-<h3>feedback</h3>
-<div class="form-group">
-  <textarea matInput [(ngModel)]="feedbackComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
-  </textarea>
-</div>
-<button mat-icon-button matSuffix (click)="feedbackComponent.submit()">
-    <mat-icon aria-hidden="false">send</mat-icon>
-</button>
-<!--
-<div class="progress">
-  <mat-progress-bar class="progress-bar" mode="determinate"
-                    [value]="feedbackComponent.uploadProgress" *ngIf="feedbackComponent.uploadProgress">
-  </mat-progress-bar>
-
-  <mat-icon class="cancel-upload" (click)="feedbackComponent.cancelUpload()"
-            *ngIf="feedbackComponent.uploadProgress">delete_forever</mat-icon>
-</div>
--->
