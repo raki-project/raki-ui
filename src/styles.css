@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
-@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 @import 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css';
 
 body {
@@ -14,6 +13,7 @@ pre {
   margin: 5px;
   background-color: #fff;
   color: black;
+
 }
 
 .string { color: green; }
@@ -30,4 +30,9 @@ textarea {
 textarea.mat-input-element {
   background-color: #fff;
   color: black;
+}
+
+.fixsize{
+  resize: none;
+  height: 300px;
 }
