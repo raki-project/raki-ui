@@ -3,29 +3,30 @@
   {{title}}
   <small class="text-muted">{{subtitle}}</small>
 </h1>
+
 <mat-divider></mat-divider>
 
 <div class="container">
+
+    <!-- Input -->
   <div class="row">
-    <div class="col">
-      <!-- left empty col -->
-    </div>
+    <div class="col"><!-- left empty col --></div>
     <div class="col-10">
-      <!--  -->
-      <!--  -->
+
       <h3>Input
         <small class="text-muted">{{inputComponent.selectedOntology}}</small>
       </h3>
+
       <!-- // select ontology -->
       <mat-form-field appearance="fill">
-        <mat-label>Select a ontology</mat-label>
+        <mat-label>Select an ontology</mat-label>
         <mat-select [(ngModel)]="inputComponent.selectedOntology" name="onto">
           <mat-option *ngFor="let onto of ontology" [value]="onto.name">
             {{onto.name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <br>
+
       <!--  // select input file-->
       <mat-form-field class="columns">
           <mat-label *ngIf="inputComponent.examplesFile; else newFile">{{inputComponent.examplesFileName}}</mat-label>
@@ -42,15 +43,15 @@
           <button mat-icon-button matSuffix (click)="inputComponent.reset()">
               <mat-icon aria-hidden="false">cancel</mat-icon>
           </button>
-          <button mat-icon-button matSuffix (click)="inputComponent.fileUpload()">
-              <mat-icon aria-hidden="false">send</mat-icon>
-          </button>
-      <!-- -->
-      <textarea matInput [(ngModel)]="inputComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
-      </textarea>
-      <!-- -->
 
       </mat-form-field>
+
+      <textarea matInput [(ngModel)]="inputComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
+      </textarea>
+
+      <button mat-icon-button matSuffix (click)="inputComponent.fileUpload()">
+          <mat-icon aria-hidden="false">send</mat-icon>
+      </button>
 
       <div class="progress">
         <mat-progress-bar class="progress-bar" mode="determinate"
@@ -61,21 +62,43 @@
                   *ngIf="inputComponent.uploadProgress">delete_forever</mat-icon>
       </div>
 
-      <!--  // verbalization -->
-      <mat-divider></mat-divider>
-      <h3>Verbalization</h3>
-      <pre [innerHTML]="inputComponent.responseData | prettyjson" *ngIf="inputComponent.responseData"></pre>
+    </div>
+    <div class="col"><!-- right empty col --></div>
+  </div>
 
-      <!--  // feedbackForm -->
-      <mat-divider></mat-divider>
+  <mat-divider></mat-divider>
+
+  <!-- Verbalization -->
+  <div class="row">
+    <div class="col"><!-- left empty col --></div>
+    <div class="col-10">
+
+      <h3>Verbalization</h3>
+
+      <pre [innerHTML]="inputComponent.responseData | prettyjson" *ngIf="inputComponent.responseData" class="fixsize"></pre>
+
+    </div>
+    <div class="col"><!-- right empty col --></div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Feedback -->
+  <div class="row">
+    <div class="col"><!-- left empty col --></div>
+    <div class="col-10">
+
       <h3>Feedback</h3>
+
       <div class="form-group">
-        <textarea matInput [(ngModel)]="feedbackComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
+        <textarea matInput [(ngModel)]="feedbackComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input fixsize" placeholder="Waiting...">
         </textarea>
       </div>
+
       <button mat-icon-button matSuffix (click)="feedbackComponent.submit()">
           <mat-icon aria-hidden="false">send</mat-icon>
       </button>
+
       <!--
       <div class="progress">
         <mat-progress-bar class="progress-bar" mode="determinate"
@@ -86,10 +109,8 @@
                   *ngIf="feedbackComponent.uploadProgress">delete_forever</mat-icon>
       </div>
       -->
-
     </div>
-    <div class="col">
-      <!-- right empty col -->
-    </div>
+    <div class="col"><!-- right empty col --></div>
   </div>
 </div>
+<mat-divider></mat-divider>
