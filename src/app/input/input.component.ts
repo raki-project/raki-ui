@@ -34,7 +34,7 @@ export class InputComponent {
     uploadProgress: number;
     uploadSub: Subscription;
 
-    rulesAPI: string = this.cfg.api + 'rules';
+    rulesAPI: string = this.cfg.api + 'raki';
 
     httpOptions = {
       //headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -64,22 +64,25 @@ export class InputComponent {
     }
 
     fileUpload(){
-      const formData = new FormData();
-
       if (this.examplesFile) {
-        // input examples via file
-        formData.append('axioms', this.examplesFile);
         this.examplesFile.text().then((data)=>{
             this.inputData = data;
         });
+      }
+    }
 
+    fileSend(){
+      const formData = new FormData();
+      if (this.examplesFile) {
+        // input examples via file
+        formData.append('input', this.examplesFile);
       }else if(this.inputData){
         // input via prompt
-        const file: File = new File([this.inputData], 'axioms.owl', {
-          type: 'application/rdf+xml',
+        const file: File = new File([this.inputData], 'input.json', {
+          type: 'application/json',
         });
 
-        formData.append('axioms', file);
+        formData.append('input', file);
 
       }else{
         console.error('no input given');
