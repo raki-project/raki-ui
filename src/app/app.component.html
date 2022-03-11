@@ -43,15 +43,13 @@
           <button mat-icon-button matSuffix (click)="inputComponent.reset()">
               <mat-icon aria-hidden="false">cancel</mat-icon>
           </button>
-
+          <button mat-icon-button matSuffix (click)="inputComponent.fileUpload()">
+              <mat-icon aria-hidden="false">upload</mat-icon>
+          </button>
       </mat-form-field>
 
-      <textarea matInput [(ngModel)]="inputComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input" placeholder="Waiting...">
+      <textarea matInput [(ngModel)]="inputComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input fixsize" placeholder="Waiting...">
       </textarea>
-
-      <button mat-icon-button matSuffix (click)="inputComponent.fileUpload()">
-          <mat-icon aria-hidden="false">send</mat-icon>
-      </button>
 
       <div class="progress">
         <mat-progress-bar class="progress-bar" mode="determinate"
@@ -61,6 +59,10 @@
         <mat-icon class="cancel-upload" (click)="inputComponent.cancelUpload()"
                   *ngIf="inputComponent.uploadProgress">delete_forever</mat-icon>
       </div>
+
+      <button mat-icon-button matSuffix (click)="inputComponent.fileSend()">
+          <mat-icon aria-hidden="false">send</mat-icon>
+      </button>
 
     </div>
     <div class="col"><!-- right empty col --></div>
