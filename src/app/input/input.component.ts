@@ -20,7 +20,7 @@ export class InputComponent {
     constructor(private http: HttpClient, private cfg: ConfigService) {}
 
     @Input() requiredFileType: string;
-    @Input() responseData: any;
+    @Input() responseData: any = 'Waiting';
 
     // input via promt instead of a file
     //@Input()
@@ -67,13 +67,14 @@ export class InputComponent {
       const formData = new FormData();
 
       if (this.examplesFile) {
-        console.log('input examples via file');
-
+        // input examples via file
         formData.append('axioms', this.examplesFile);
+        this.examplesFile.text().then((data)=>{
+            this.inputData = data;
+        });
 
       }else if(this.inputData){
-        console.log('input via prompt');
-
+        // input via prompt
         const file: File = new File([this.inputData], 'axioms.owl', {
           type: 'application/rdf+xml',
         });
@@ -87,15 +88,16 @@ export class InputComponent {
       formData.append('ontologyName', this.selectedOntology);
       this.sendData(formData);
     }
-  cancelUpload() {
-    this.uploadSub.unsubscribe();
-    this.reset();
-  }
 
-  reset() {
-    this.uploadProgress = null;
-    this.uploadSub = null;
-    this.examplesFile = null;
-    this.examplesFileName=null;
-  }
+    cancelUpload() {
+      this.uploadSub.unsubscribe();
+      this.reset();
+    }
+
+    reset() {
+      this.uploadProgress = null;
+      this.uploadSub = null;
+      this.examplesFile = null;
+      this.examplesFileName=null;
+    }
 }
