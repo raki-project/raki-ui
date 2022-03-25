@@ -1,11 +1,12 @@
 import {Injectable, Component, Input} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Subscription, throwError} from 'rxjs';
 import {catchError, finalize } from 'rxjs/operators';
-import {HttpClient, HttpEventType} from '@angular/common/http';
+import {HttpClient, HttpEventType, HttpErrorResponse} from '@angular/common/http';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatIconModule} from '@angular/material/icon';
 import {ConfigService} from '../app/config.service';
+import {LoggerService} from '../logger/logger.service';
 
 @Injectable({providedIn: 'root'})
 
@@ -17,14 +18,18 @@ import {ConfigService} from '../app/config.service';
 
 export class InputComponent {
 
-    constructor(private http: HttpClient, private cfg: ConfigService) {}
+    constructor(
+      private http: HttpClient,
+      private cfg: ConfigService,
+      public log: LoggerService
+    ) {}
 
     @Input() requiredFileType: string;
-    @Input() responseData: any = 'Waiting';
+    @Input() responseData: any = '';
 
     // input via promt instead of a file
     //@Input()
-    inputData: string;
+    inputData: string = '';
 
     examplesFile: File;
     examplesFileName: string = '';
@@ -54,13 +59,34 @@ export class InputComponent {
       )
 
       this.uploadSub = upload$.subscribe(event => {
+        this.log.info('Uploading ...');
+
         if (event.type == HttpEventType.UploadProgress) {
           this.uploadProgress = Math.round(100 * (event.loaded / event.total));
         }
         if (event.type === HttpEventType.Response) {
             this.responseData = event.body;
+            this.log.info('Responsed.');
         }
-      })
+      },
+      error => {
+        this.handleError(error);
+      });
+    }
+
+    handleError(error: HttpErrorResponse) {
+      if (error.status === 0) {
+        this.log.error(
+          'An error occurred: ' + JSON.stringify(error.error)
+        );
+      } else {
+        this.log.error(
+          'Backend returned code ' + error.status +': ' + JSON.stringify(error.error)
+        );
+      }
+      return throwError(
+        () => new Error('Something bad happened; please try again later.')
+      );
     }
 
     fileUpload(){
@@ -83,18 +109,20 @@ export class InputComponent {
         });
 
         formData.append('input', file);
-
-      }else{
-        console.error('no input given');
       }
 
-      formData.append('ontologyName', this.selectedOntology);
-      this.sendData(formData);
+      if(formData.get('input')){
+        formData.append('ontologyName', this.selectedOntology);
+        this.sendData(formData);
+      }else{
+        this.log.warn('No input given.');
+      }
     }
 
     cancelUpload() {
       this.uploadSub.unsubscribe();
       this.reset();
+      this.log.info('Upload canceled.');
     }
 
     reset() {

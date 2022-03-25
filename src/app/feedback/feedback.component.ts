@@ -17,9 +17,12 @@ import {ConfigService} from '../app/config.service';
 
 export class FeedbackComponent {
 
-  constructor(private http: HttpClient,private cfg: ConfigService) {}
+  constructor(
+    private http: HttpClient,
+    private cfg: ConfigService
+  ) {}
 
-  uploadProgress:number;
+  uploadProgress: number;
   uploadSub: Subscription;
   httpOptions = {
     //headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -33,7 +36,7 @@ export class FeedbackComponent {
   inputData: any;
   responseData: any;
 
-  submit():void{
+  submit(): void {
     if(this.inputData){
       const file: File = new File([this.inputData], 'feedback.json', {
         type: 'application/json',
