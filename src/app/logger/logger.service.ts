@@ -4,15 +4,31 @@ import {Injectable} from '@angular/core';
 
 export class LoggerService {
 
-  info(message: string) {
+  lastInfo: string;
+  lastWarn: string;
+  lastError: string;
+
+  info(message: string): void {
+    this.clear();
     console.log(message);
-  };
+    this.lastInfo = message;
+  }
 
-  warn(message: string) {
+  warn(message: string): void {
+    this.clear();
     console.warn(message);
-  };
+    this.lastWarn = message;
+  }
 
-  error(message: string) {
+  error(message: string): void {
+    this.clear();
     console.error(message);
-  };
-};
+    this.lastError = message;
+  }
+
+  clear(): void {
+    this.lastInfo = '';
+    this.lastWarn = '';
+    this.lastError = '';
+  }
+}
