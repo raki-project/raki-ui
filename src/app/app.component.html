@@ -50,6 +50,10 @@
 
       <textarea matInput [(ngModel)]="inputComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input fixsize" placeholder="Waiting...">
       </textarea>
+<!--
+      <pre [innerHTML]="inputComponent.inputData | prettyjson" *ngIf="inputComponent.inputData" class="input fixsize" placeholder="Waiting..."></pre>
+
+      -->
 
       <div class="progress">
         <mat-progress-bar class="progress-bar" mode="determinate"
@@ -65,7 +69,18 @@
       </button>
 
     </div>
-    <div class="col"><!-- right empty col --></div>
+    <div class="col"><!-- right empty col --> </div>
+  </div>
+
+  <!-- log infos via alerts -->
+  <div *ngIf="inputComponent.log.lastInfo" class="alert alert-success" role="alert">
+    {{inputComponent.log.lastInfo}}
+  </div>
+  <div *ngIf="inputComponent.log.lastError" class="alert alert-danger" role="alert">
+    {{inputComponent.log.lastError}}
+  </div>
+  <div *ngIf="inputComponent.log.lastWarn" class="alert alert-warning" role="alert">
+    {{inputComponent.log.lastWarn}}
   </div>
 
   <mat-divider></mat-divider>
@@ -77,7 +92,7 @@
 
       <h3>Verbalization</h3>
 
-      <pre [innerHTML]="inputComponent.responseData | prettyjson" *ngIf="inputComponent.responseData" class="fixsize"></pre>
+      <pre [innerHTML]="inputComponent.responseData | prettyjson" *ngIf="inputComponent.responseData" class="fixsize"> </pre>
 
     </div>
     <div class="col"><!-- right empty col --></div>
