@@ -30,7 +30,7 @@
 
       <!--  // select input file-->
       <mat-form-field class="columns">
-          <mat-label *ngIf="inputComponent.examplesFile; else newFile">{{inputComponent.examplesFileName}}</mat-label>
+          <mat-label *ngIf="inputComponent.examplesFile; else newFile">{{inputComponent.examplesFile.name}}</mat-label>
           <ng-template #newFile>
               <mat-label>Choose a file with examples</mat-label>
           </ng-template>
