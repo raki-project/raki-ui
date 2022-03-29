@@ -1,12 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-//
-import {LoggerService} from './logger/logger.service';
 import {InputComponent} from './input/input.component';
-import {InfoDataComponent} from './info-data/info-data.component';
-import {InfoDataInterface} from './info-data/interface/info';
 import {FeedbackComponent} from './feedback/feedback.component';
+import {ConfigService} from './app/config.service';
 
 @Component({
   selector: 'app-root',
@@ -16,29 +11,13 @@ import {FeedbackComponent} from './feedback/feedback.component';
 
 export class AppComponent {
 
-  title: string = 'RAKI';
-  subtitle: string = 'graphical user interface';
-
   constructor(
-    private log: LoggerService,
-    private http: HttpClient,
-    private infoDataComponent: InfoDataComponent,
+    public cfg: ConfigService,
     public inputComponent: InputComponent,
     public feedbackComponent: FeedbackComponent
   ) { }
 
-  ontology: any=[];
-  version: any=[];
-
-  ngOnInit() {
-    this.intiInfodata();
-  }
-
-  intiInfodata(): void {
-    this.infoDataComponent.getData()
-      .subscribe(infodata => {
-        this.ontology = infodata.ontology;
-        this.version = infodata.version;
-      });
+  ngOnInit(): void {
+    this.cfg.init();
   }
 }

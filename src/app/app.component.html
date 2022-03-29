@@ -1,7 +1,7 @@
 
 <h1 class="display-1 text-center">
-  {{title}}
-  <small class="text-muted">{{subtitle}}</small>
+  {{cfg.get.title}}
+  <small class="text-muted">{{cfg.get.subtitle}}</small>
 </h1>
 
 <mat-divider></mat-divider>
@@ -18,10 +18,11 @@
       </h3>
 
       <!-- // select ontology -->
-      <mat-form-field appearance="fill">
+      <mat-form-field  *ngIf="cfg.info"  appearance="fill">
         <mat-label>Select an ontology</mat-label>
         <mat-select [(ngModel)]="inputComponent.selectedOntology" name="onto">
-          <mat-option *ngFor="let onto of ontology" [value]="onto.name">
+          <mat-option
+           *ngFor="let onto of cfg.info.ontology" [value]="onto.name">
             {{onto.name}}
           </mat-option>
         </mat-select>
@@ -48,18 +49,11 @@
           </button>
       </mat-form-field>
 
-      <textarea matInput [(ngModel)]="inputComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input fixsize" placeholder="Waiting...">
-      </textarea>
-<!--
-      <pre [innerHTML]="inputComponent.inputData | prettyjson" *ngIf="inputComponent.inputData" class="input fixsize" placeholder="Waiting..."></pre>
+      <textarea matInput [(ngModel)]="inputComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input fixsize" placeholder="Waiting..."> </textarea>
 
-      -->
-
-      <div class="progress">
+      <div class="progress" *ngIf="inputComponent.uploadProgress">
         <mat-progress-bar class="progress-bar" mode="determinate"
-                          [value]="inputComponent.uploadProgress" *ngIf="inputComponent.uploadProgress">
-        </mat-progress-bar>
-
+                          [value]="inputComponent.uploadProgress"></mat-progress-bar>
         <mat-icon class="cancel-upload" (click)="inputComponent.cancelUpload()"
                   *ngIf="inputComponent.uploadProgress">delete_forever</mat-icon>
       </div>
@@ -100,34 +94,7 @@
 
   <mat-divider></mat-divider>
 
-  <!-- Feedback -->
-  <div class="row">
-    <div class="col"><!-- left empty col --></div>
-    <div class="col-10">
+  <feedback-component (feedbackEvent)="inputComponent.setFeedback($event)"></feedback-component>
 
-      <h3>Feedback</h3>
-
-      <div class="form-group">
-        <textarea matInput [(ngModel)]="feedbackComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input fixsize" placeholder="Waiting...">
-        </textarea>
-      </div>
-
-      <button mat-icon-button matSuffix (click)="feedbackComponent.submit()">
-          <mat-icon aria-hidden="false">send</mat-icon>
-      </button>
-
-      <!--
-      <div class="progress">
-        <mat-progress-bar class="progress-bar" mode="determinate"
-                          [value]="feedbackComponent.uploadProgress" *ngIf="feedbackComponent.uploadProgress">
-        </mat-progress-bar>
-
-        <mat-icon class="cancel-upload" (click)="feedbackComponent.cancelUpload()"
-                  *ngIf="feedbackComponent.uploadProgress">delete_forever</mat-icon>
-      </div>
-      -->
-    </div>
-    <div class="col"><!-- right empty col --></div>
-  </div>
-</div>
-<mat-divider></mat-divider>
+  <mat-divider></mat-divider>
+</div><!-- container -->
