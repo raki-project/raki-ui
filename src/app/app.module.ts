@@ -16,17 +16,16 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 //
-import {InfoDataComponent} from './info-data/info-data.component';
 import {PrettyJsonPipe} from './prettyjson/prettyjson.pipe';
 
 import {ConfigService} from './app/config.service';
-
+import {FeedbackComponent} from './feedback/feedback.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PrettyJsonPipe,
-    InfoDataComponent
+    FeedbackComponent
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule,
