@@ -1,7 +1,7 @@
 import {Injectable, Component, Input} from '@angular/core';
 import {Subscription, throwError} from 'rxjs';
 import {catchError, finalize } from 'rxjs/operators';
-import {HttpClient, HttpEventType, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpEventType, HttpSentEvent, HttpErrorResponse} from '@angular/common/http';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatIconModule} from '@angular/material/icon';
@@ -20,16 +20,14 @@ export class InputComponent {
 
     constructor(
       private http: HttpClient,
-      private cfg: ConfigService,
+      public cfg: ConfigService,
       public log: LoggerService
     ) {}
 
     @Input() requiredFileType: string;
     @Input() responseData: any = '';
 
-    // input via promt instead of a file
-    //@Input()
-    inputData: string = '';
+    inputData: any;
 
     examplesFile: File;
     examplesFileName: string = '';
@@ -42,38 +40,117 @@ export class InputComponent {
     rulesAPI: string = this.cfg.api + 'raki';
 
     httpOptions = {
-      //headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       responseType: 'json' as const,
       reportProgress: true,
       observe: 'events' as const
-    };
-
-    onFileSelected(event) {
-        this.examplesFile = event.target.files[0];
-        this.examplesFileName = this.examplesFile.name;
     }
 
+    // public
+
+    /** sets vars  */
+    onFileSelected(event) {
+        this.examplesFile = event.target.files[0];
+        if(this.examplesFile){
+          this.examplesFileName = this.examplesFile.name;
+          //this.inputData = undefined;
+        }
+    }
+
+    /** prepares the input and sends it */
+    fileUpload(){
+      if (this.examplesFile) {
+        return this.examplesFile.text().then(
+          data => {this.inputData = data}
+        );
+      }
+    }
+
+    /** prepares the input and sends it */
+    fileSend(){
+      if(this.selectedOntology){
+        if (this.examplesFile){
+          if (!this.inputData) {
+            this.fileUpload().then(() => {this.fileSend()});
+          }
+        }
+        if(this.isJson(this.inputData)){
+          const file: File = new File([this.inputData], 'input.json', {
+            type: 'application/json',
+          });
+          const formData = new FormData();
+          formData.append('input', file);
+          formData.append('ontologyName', this.selectedOntology);
+
+          this.sendData(formData);
+        }
+      }else{
+        this.log.warn('Select an ontology.');
+      }
+    }
+
+    /** cancels upload and resets vars */
+    cancelUpload() {
+      this.uploadSub.unsubscribe();
+      this.reset();
+      this.log.info('Upload canceled.');
+    }
+
+    /** resets vars */
+    reset() {
+      this.uploadProgress = null;
+      this.uploadSub = null;
+      this.examplesFile = null;
+      this.examplesFileName = null;
+    }
+
+    setFeedback(feedback: any){
+      if(this.isJson(feedback)){
+        var i = this.isJson(this.inputData);
+        var f = this.isJson(feedback)
+        i['positives'] = Array.from(this.union(i['positives'],f['positives']));
+        i['negatives'] = Array.from(this.union(i['negatives'],f['negatives']));
+        this.inputData = JSON.stringify(i, null, 2);
+        this.fileSend();
+      }
+    }
+
+    // private
+
+    /** sends the given input  */
     sendData(formData: FormData){
       const upload$ = this.http.post(this.rulesAPI, formData, this.httpOptions).pipe(
           finalize(() => this.reset())
       )
 
-      this.uploadSub = upload$.subscribe(event => {
-        this.log.info('Uploading ...');
-
-        if (event.type == HttpEventType.UploadProgress) {
-          this.uploadProgress = Math.round(100 * (event.loaded / event.total));
-        }
-        if (event.type === HttpEventType.Response) {
-            this.responseData = event.body;
-            this.log.info('Responsed.');
-        }
-      },
-      error => {
-        this.handleError(error);
-      });
+      this.uploadSub = upload$.subscribe(
+        event => {this.handleEvent(event)},
+        error => {this.handleError(error)}
+      );
     }
 
+    /** http event handle */
+    handleEvent(event) {
+      if (event.type === HttpEventType.Sent) {
+          this.log.info('Sent request.');
+      }
+      if (event.type == HttpEventType.UploadProgress) {
+        this.uploadProgress = Math.round(100 * (event.loaded / event.total));
+        this.log.info('Uploading ' +   this.uploadProgress + '%.');
+        if(this.uploadProgress == 100){
+          this.log.info('Processing request...');
+          this.uploadProgress = undefined;
+        }
+      }
+      if (event.type === HttpEventType.Response) {
+          this.responseData = event.body;
+          this.log.info('Responsed.');
+      }
+      if (event.type === HttpEventType.Sent) {
+          this.log.info('Sent request.');
+      }
+    }
+
+    /** http error handle */
     handleError(error: HttpErrorResponse) {
       if (error.status === 0) {
         this.log.error(
@@ -89,46 +166,21 @@ export class InputComponent {
       );
     }
 
-    fileUpload(){
-      if (this.examplesFile) {
-        this.examplesFile.text().then((data)=>{
-            this.inputData = data;
-        });
+    /** tries to parse the given input to json */
+    isJson(str) {
+      try {
+          return JSON.parse(str);
+      } catch (e) {
+          this.log.error("Input isn't in json format.");
       }
+      return false;
     }
 
-    fileSend(){
-      const formData = new FormData();
-      if (this.examplesFile) {
-        // input examples via file
-        formData.append('input', this.examplesFile);
-      }else if(this.inputData){
-        // input via prompt
-        const file: File = new File([this.inputData], 'input.json', {
-          type: 'application/json',
-        });
-
-        formData.append('input', file);
-      }
-
-      if(formData.get('input')){
-        formData.append('ontologyName', this.selectedOntology);
-        this.sendData(formData);
-      }else{
-        this.log.warn('No input given.');
-      }
-    }
-
-    cancelUpload() {
-      this.uploadSub.unsubscribe();
-      this.reset();
-      this.log.info('Upload canceled.');
-    }
-
-    reset() {
-      this.uploadProgress = null;
-      this.uploadSub = null;
-      this.examplesFile = null;
-      this.examplesFileName=null;
+    union(setA, setB) {
+        let _union = new Set(setA)
+        for (let elem of setB) {
+            _union.add(elem)
+        }
+        return _union
     }
 }
