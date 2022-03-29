@@ -1,0 +1,17 @@
+<!-- Feedback -->
+<div class="row">
+  <div class="col"><!-- left empty col --></div>
+  <div class="col-10">
+
+    <h3>Feedback</h3>
+
+    <div class="form-group">
+      <textarea matInput  class="form-control input fixsize" placeholder="Waiting..." #input></textarea>
+    </div>
+
+    <button mat-icon-button matSuffix (click)="emitFeedback(input.value)"><mat-icon aria-hidden="false">send</mat-icon>
+    </button>
+
+  </div>
+  <div class="col"><!-- right empty col --></div>
+</div>
