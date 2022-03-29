@@ -28,32 +28,16 @@ export class InputComponent {
     @Input() responseData: any = '';
 
     inputData: any;
-
     examplesFile: File;
-    examplesFileName: string = '';
-
     selectedOntology: string;
-
     uploadProgress: number;
     uploadSub: Subscription;
-
-    rulesAPI: string = this.cfg.api + 'raki';
-
-    httpOptions = {
-      responseType: 'json' as const,
-      reportProgress: true,
-      observe: 'events' as const
-    }
 
     // public
 
     /** sets vars  */
     onFileSelected(event) {
-        this.examplesFile = event.target.files[0];
-        if(this.examplesFile){
-          this.examplesFileName = this.examplesFile.name;
-          //this.inputData = undefined;
-        }
+      this.examplesFile = event.target.files[0];
     }
 
     /** prepares the input and sends it */
@@ -100,7 +84,6 @@ export class InputComponent {
       this.uploadProgress = null;
       this.uploadSub = null;
       this.examplesFile = null;
-      this.examplesFileName = null;
     }
 
     setFeedback(feedback: any){
@@ -118,7 +101,16 @@ export class InputComponent {
 
     /** sends the given input  */
     sendData(formData: FormData){
-      const upload$ = this.http.post(this.rulesAPI, formData, this.httpOptions).pipe(
+      const httpOptions = {
+        responseType: 'json' as const,
+        reportProgress: true,
+        observe: 'events' as const
+      }
+      const upload$ = this.http.post(
+        this.cfg.api + 'raki',
+        formData,
+        httpOptions
+      ).pipe(
           finalize(() => this.reset())
       )
 
