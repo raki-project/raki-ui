@@ -1,3 +1,5 @@
 {
-  "rakiWebapp" : "http://localhost:9081/"  
+  "rakiBackend" : "http://localhost:9081/",
+  "title" : "RAKI",
+  "subtitle" : "graphical user interface"
 }
