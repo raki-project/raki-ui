@@ -1,3 +1,4 @@
+declare let json2html: any;
 import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
@@ -6,7 +7,19 @@ import {Pipe, PipeTransform} from '@angular/core';
 
 export class PrettyJsonPipe implements PipeTransform {
 
+
+  constructor() { }
+
   transform(json: any, ...args: any[]): any {
+    if (typeof json != 'string') {
+         json = JSON.stringify(json, undefined, 2);
+    }
+  json = JSON.parse(json).response;
+    let template = {'<>':'div','text':'${nl} (${dl})'};
+    return json2html.render(json,template)
+  }
+
+  _transform(json: any, ...args: any[]): any {
     if (typeof json != 'string') {
          json = JSON.stringify(json, undefined, 2);
     }
