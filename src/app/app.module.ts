@@ -12,6 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 // app
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -33,7 +34,7 @@ import {FeedbackComponent} from './feedback/feedback.component';
     ReactiveFormsModule, FormsModule,
     HttpClientModule,
     //material
-    MatSliderModule, MatIconModule, MatInputModule, MatDividerModule, MatSelectModule, MatProgressBarModule,
+    MatSliderModule, MatIconModule, MatInputModule,  MatDividerModule, MatSelectModule, MatProgressBarModule, MatCheckboxModule, 
     //
     NgbModule
   ],

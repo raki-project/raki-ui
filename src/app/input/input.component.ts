@@ -16,13 +16,16 @@ import {LoggerService} from '../logger/logger.service';
   styleUrls: ['input.component.css']
 })
 
+
 export class InputComponent {
 
     constructor(
       private http: HttpClient,
       public cfg: ConfigService,
       public log: LoggerService
-    ) {}
+    ) {
+      this.verbalizationType = 'rules';
+    }
 
     @Input() requiredFileType: string;
     @Input() responseData: any = '';
@@ -32,6 +35,7 @@ export class InputComponent {
     selectedOntology: string;
     uploadProgress: number;
     uploadSub: Subscription;
+    verbalizationType: string;
 
     // public
 
@@ -107,7 +111,7 @@ export class InputComponent {
         observe: 'events' as const
       }
       const upload$ = this.http.post(
-        this.cfg.api + 'raki',
+        this.cfg.api + 'raki?type=' + this.verbalizationType,
         formData,
         httpOptions
       ).pipe(
@@ -150,7 +154,7 @@ export class InputComponent {
         );
       } else {
         this.log.error(
-          'Backend returned code ' + error.status +': ' + JSON.stringify(error.error)
+          'Backend returned code ' + error.status +' ('+JSON.stringify(error.name)+'): ' + JSON.stringify(error.error)
         );
       }
       return throwError(

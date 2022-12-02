@@ -1,24 +1,18 @@
-
-<h1 class="display-1 text-center">
-  {{cfg.get.title}}
-  <small class="text-muted">{{cfg.get.subtitle}}</small>
-</h1>
-
-<mat-divider></mat-divider>
-
 <div class="container">
-
-    <!-- Input -->
+  <!-- Page title -->
+  <h1 class="display-1 text-center">{{cfg.get.title}}
+  <small class="text-muted">{{cfg.get.subtitle}}</small>
+  </h1>
+  <!--  -->
+  <!-- Input row -->
   <div class="row">
     <div class="col"><!-- left empty col --></div>
     <div class="col-10">
-
-      <h3>Input
-        <small class="text-muted">{{inputComponent.selectedOntology}}</small>
+      <!-- Label of the selected ontology -->
+      <h3>Input <small class="text-muted">{{inputComponent.selectedOntology}}</small>
       </h3>
-
-      <!-- // select ontology -->
-      <mat-form-field  *ngIf="cfg.info"  appearance="fill">
+      <!-- select an ontology -->
+      <mat-form-field *ngIf="cfg.info" appearance="fill">
         <mat-label>Select an ontology</mat-label>
         <mat-select [(ngModel)]="inputComponent.selectedOntology" name="onto">
           <mat-option
@@ -27,8 +21,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-
-      <!--  // select input file-->
+      <!-- select input file-->
       <mat-form-field class="columns">
           <mat-label *ngIf="inputComponent.examplesFile; else newFile">{{inputComponent.examplesFile.name}}</mat-label>
           <ng-template #newFile>
@@ -48,7 +41,7 @@
               <mat-icon aria-hidden="false">upload</mat-icon>
           </button>
       </mat-form-field>
-
+      <!-- -->
       <textarea matInput [(ngModel)]="inputComponent.inputData" [ngModelOptions]="{standalone: true}" class="form-control input fixsize" placeholder="Waiting..."> </textarea>
 
       <div class="progress" *ngIf="inputComponent.uploadProgress">
@@ -57,12 +50,23 @@
         <mat-icon class="cancel-upload" (click)="inputComponent.cancelUpload()"
                   *ngIf="inputComponent.uploadProgress">delete_forever</mat-icon>
       </div>
-
-      <button mat-icon-button matSuffix (click)="inputComponent.fileSend()">
-          <mat-icon aria-hidden="false">send</mat-icon>
-      </button>
-
+      <!-- select verbalization type-->
+      <div class="col-md-12 text-right">
+        <mat-form-field appearance="fill">
+        <mat-label>Verbalization type</mat-label>
+        <mat-select
+          [(ngModel)]="inputComponent.verbalizationType"
+          name="verbType"
+          ngbTooltip="Choose rule-based or transformer-based verbalization.">
+          <mat-option *ngFor="let verbType of ['rules','model']" [value]="verbType">{{verbType}}</mat-option>
+        </mat-select>
+        </mat-form-field>
+        <button mat-icon-button matSuffix (click)="inputComponent.fileSend()">
+            <mat-icon aria-hidden="false">send</mat-icon>
+        </button>
+      </div>
     </div>
+
     <div class="col"><!-- right empty col --> </div>
   </div>
 
@@ -79,7 +83,7 @@
 
   <mat-divider></mat-divider>
 
-  <!-- Verbalization -->
+  <!-- Verbalization row -->
   <div class="row">
     <div class="col"><!-- left empty col --></div>
     <div class="col-10">
